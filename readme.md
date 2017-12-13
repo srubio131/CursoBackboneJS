@@ -256,3 +256,92 @@ var Libreria = Backbone.View.extend({
     }
 });
 ```
+
+## Colecciones
+
+`Una colección es una agrupación de modelos`
+```
+var LibrosCollection = Backbone.Collection.extend({
+   model: Libro
+});
+```
+
+### Agregar modelos
+
+```
+var a = new Libro({ titulo: 'titulo 1', autor: 'autor 1' }),
+    b = new Libro({ titulo: 'titulo 2', autor: 'autor 2' }),
+    c = new Libro({ titulo: 'titulo 3', autor: 'autor 3' });
+
+var libros = new LibrosCollection([a,b]);   // Output: undefined
+libros.toJSON();                            // Output: [Object, Object]
+
+libros.add(c);                              // Output: libros(a,b) + c
+libros.toJSON();                            // Output: [Object, Object, Object]
+```
+
+### Eliminar modelos
+
+```
+var a = new Libro({ titulo: 'titulo 1', autor: 'autor 1' }),
+    b = new Libro({ titulo: 'titulo 2', autor: 'autor 2' }),
+    c = new Libro({ titulo: 'titulo 3', autor: 'autor 3' });
+
+var libros = new LibrosCollection([a,b,c]);   // Output: undefined
+libros.toJSON();                              // Output: [Object, Object, Object]
+
+libros.remove([a,b]);                         // Output: c
+libros.toJSON();                              // Output: [Object, Object]
+```
+
+### Recuperar modelo de una colección
+
+La función get() te permite indicar un id, id atribute o cid (El cid es un valor autogenerado al crear el modelo)
+```
+var d = new Libro({ titulo: 'titulo 4', autor: 'autor 4', id: 4 });
+
+var libros = new LibrosCollection(d);       // Output: undefined
+var modeloDevuelto = libros.get(4);
+modeloDevuelto.toJSON();                    // Output: { titulo: 'titulo 4', autor: 'autor 4', id: 4 }
+```
+
+### Eventos al manipular modelos de la colección
+
+```
+var libros = new LibrosCollection();
+
+// Se crea el evento add
+libros.on('add', function(){
+   console.log('Se agregó un nuevo modelo a la colección');
+});
+libros.add({titulo: 'titulo 1', autor: 'autor 1'});         // Se agregó un nuevo modelo a la colección
+
+// Se crea el evento change
+libros.on('change', function(model){
+   console.log('El modelo con titulo: ' + model.titulo + ' ha cambiado.');
+});
+libros.set({titulo: 'titulo 1111'});         // El modelo con titulo: titulo 1111 ha cambiado.
+
+// Limpia la colección a añade los modelos que se indiquen
+libros.reset([{
+    titulo: 'Libro profesional', autor: 'Jean Manuel'
+}]);
+libros.toJSON();            // Output: { titulo: 'Libro profesional', autor: 'Jean Manuel' }
+```
+
+### Sincronización de colecciones con los datos del servidor. Método fetch()
+
+`Traer todos los datos del servidor y agregarlos como modelos a una colección`
+```
+var LibrosCollection = Backbone.Collection.extend({
+   model: Libro,
+
+    url: '/libros'
+});
+```
+
+```
+var libros = new LibrosCollection();
+libros.fetch();
+libros.toJSON();                        // Output: <Todos los modelos del fichero datos.json>
+```

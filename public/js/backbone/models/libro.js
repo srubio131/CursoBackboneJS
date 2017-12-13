@@ -9,7 +9,7 @@ var Libro = Backbone.Model.extend({
         // Al utilizar el método "Set" o "Get" se desencadenan dos eventos: change y change:<nombre_atributo>
         // Se queda a la escucha de cambios en el modelo y si hay cambios se ejecuta el callback
         this.on('change', function () {
-            console.log('El modleo ha cambiado');
+            console.log('El modelo ha cambiado');
         })
     },
 

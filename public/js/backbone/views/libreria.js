@@ -11,5 +11,13 @@ var Libreria = Backbone.View.extend({
 
     render: function() {
         this.$el.html('<p>Renderizando...</p>')
+    },
+
+    events: {
+        'click .cambiarColor': 'cambiarColor'   // Output: Al hacer click en el div se pinta de rojo
+    },
+
+    cambiarColor: function() {
+        this.$el.css('color','red');
     }
 });
